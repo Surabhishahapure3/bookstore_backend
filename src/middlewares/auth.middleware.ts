@@ -15,21 +15,46 @@ export const userAuth = async (
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<void> => {
+): Promise<any> => {
   try {
-    let bearerToken = req.header('Authorization');
-    if (!bearerToken)
-      throw {
-        code: HttpStatus.BAD_REQUEST,
-        message: 'Authorization token is required'
-      };
-    bearerToken = bearerToken.split(' ')[1];
+    console.log('Authorization Header:', req.headers['authorization']);
+    const bearerToken = req.header('Authorization');
 
-    const { user }: any = await jwt.verify(bearerToken, 'your-secret-key');
-    res.locals.user = user;
-    res.locals.token = bearerToken;
-    next();
+    // Check if the token exists
+    if (!bearerToken) {
+      return res.status(HttpStatus.BAD_REQUEST).json({
+        message: 'Authorization token is required',
+      });
+    }
+
+    const token = bearerToken.split(' ')[1]; // Extract the token
+
+    // Verify the token
+    const user: any = jwt.verify(token, process.env.JWT_SECRET);
+    console.log('Decoded user in middleware:', user); 
+
+    // Check if the user is successfully decoded
+    if (!user || !user.role) { // Ensure role exists in the token
+      return res.status(HttpStatus.UNAUTHORIZED).json({
+        message: 'Invalid or expired token or missing role',
+      });
+    }
+
+    // Set user data to request and response locals
+    req.user = user;
+    res.locals.user = user;  // Make user available in other middlewares
+    res.locals.userId = user.id;
+    
+    req.body.createdby = user.id;  // Set the created by field
+    res.locals.createdby = user.id; // Store created by in response locals
+    res.locals.token = token; // Store the token in response locals
+
+    console.log('Authenticated user:', user.id);
+    next();  // Proceed to the next middleware
   } catch (error) {
-    next(error);
+    console.error('Error in userAuth middleware:', error);
+    return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+      message: 'Authentication error',
+    });
   }
 };
