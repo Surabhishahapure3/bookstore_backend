@@ -36,6 +36,30 @@ class UserController {
    * @param {object} Response - response object
    * @param {Function} NextFunction
    */
+  public loginUser = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<any> => {
+    try {
+      const data = await this.UserService.loginUser(req.body);
+      return res.status(data.code).json({
+        code: data.code,
+        data: data.data,
+        message: data.message,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  /**
+   * Controller to get a user
+   * @param  {object} Request - request object
+   * @param {object} Response - response object
+   * @param {Function} NextFunction
+   */
+  
   public getUser = async (
     req: Request,
     res: Response,
@@ -52,6 +76,7 @@ class UserController {
       next(error);
     }
   };
+  
 
   /**
    * Controller to create new user
@@ -59,6 +84,7 @@ class UserController {
    * @param {object} Response - response object
    * @param {Function} NextFunction
    */
+  
   public newUser = async (
     req: Request,
     res: Response,
@@ -66,10 +92,10 @@ class UserController {
   ): Promise<any> => {
     try {
       const data = await this.UserService.newUser(req.body);
-      res.status(HttpStatus.CREATED).json({
-        code: HttpStatus.CREATED,
-        data: data,
-        message: 'User created successfully'
+      res.status(data.code).json({
+        code: data.code,
+        data:data.data,
+        message: data.message
       });
     } catch (error) {
       next(error);
@@ -82,6 +108,7 @@ class UserController {
    * @param {object} Response - response object
    * @param {Function} NextFunction
    */
+  
   public updateUser = async (
     req: Request,
     res: Response,
@@ -98,13 +125,14 @@ class UserController {
       next(error);
     }
   };
-
+  
   /**
    * Controller to delete a single user
    * @param  {object} Request - request object
    * @param {object} Response - response object
    * @param {Function} NextFunction
    */
+  
   public deleteUser = async (
     req: Request,
     res: Response,
@@ -121,6 +149,7 @@ class UserController {
       next(error);
     }
   };
+  
 }
 
 export default UserController;
