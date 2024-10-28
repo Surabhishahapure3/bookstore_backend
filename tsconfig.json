@@ -3,12 +3,12 @@
     "target": "es6",
     "module": "commonjs",
     "allowJs": true,
-    "outDir": "./build",
+    "outDir": "./dist",
     "rootDir": "./src",
     "esModuleInterop": true,
     "noImplicitAny": false,
     "allowSyntheticDefaultImports": true
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*","src/express.d.ts"],
   "exclude": ["node_modules", "src/tests"]
 }
