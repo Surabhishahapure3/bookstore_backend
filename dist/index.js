@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var dotenv_1 = require("dotenv");
-dotenv_1.default.config();
+dotenv_1.config();
 var express_1 = require("express");
 var cors_1 = require("cors");
 var helmet_1 = require("helmet");
