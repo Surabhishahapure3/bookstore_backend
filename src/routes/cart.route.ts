@@ -19,7 +19,7 @@ class CartRoutes {
       );
       
     //Get all items from cart
-    this.router.get('/:id', userAuth, this.CartController.getAllItemFromCart),
+    this.router.get('/', userAuth, this.CartController.getAllItemFromCart),
       //Add item to cart
       this.router.post('/:id', userAuth, this.CartController.addToCart);
 

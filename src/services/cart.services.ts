@@ -42,7 +42,7 @@ class CartService {
             description: book.description,
             price: book.price,
             discountPrice: book.discountPrice,
-            bookImage: book.bookImage,
+            bookImage: book.bookImage || '',
             quantity: 1,
             author: book.author,
             userId: new mongoose.Types.ObjectId(userId)
@@ -67,7 +67,7 @@ class CartService {
           description: book.description,
           price: book.price,
           discountPrice: book.discountPrice,
-          bookImage: book.bookImage,
+          bookImage: book.bookImage || '',
           quantity: 1,
           author: book.author,
           userId: new mongoose.Types.ObjectId(userId)

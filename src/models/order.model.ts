@@ -1,11 +1,11 @@
 import mongoose, { Schema, model } from 'mongoose';
-import { ICart } from '../interfaces/cart.interface'; 
+import { IOrder } from '../interfaces/order.interface';
 
-const cartSchema = new Schema<ICart>(
+const orderSchema = new Schema<IOrder>(
   {
-    userId: {
+    customerId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: 'Customer',
       required: true,
     },
     books: {
@@ -16,27 +16,23 @@ const cartSchema = new Schema<ICart>(
           price: { type: Number, required: true },
           discountPrice: { type: Number, required: true },
           bookImage: { type: String, required: false },
-          quantity: { type: Number, required: true, default: 1 },
+          quantity: { type: Number, required: true },
           author: { type: String, required: true },
-          userId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User',
-            required: true,
-          },
         }
       ],
       required: true,
-      default: [],
     },
     totalPrice: {
       type: Number,
       required: true,
-      default: 0,
     },
     totalDiscountPrice: {
       type: Number,
       required: true,
-      default: 0,
+    },
+    orderStatus: {
+      type: Boolean,
+      default: false,
     },
   },
   {
@@ -44,4 +40,4 @@ const cartSchema = new Schema<ICart>(
   }
 );
 
-export default model<ICart>('Cart', cartSchema);
+export default model<IOrder>('Order', orderSchema);

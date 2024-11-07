@@ -11,7 +11,7 @@ class CartController {
     next: NextFunction
   ): Promise<void> => {
     try {
-      const userId: string = req.body.userId;
+      const userId: string = res.locals.userId;
       const data = await this.CartService.getAllItemsFromCart(userId);
       res.status(HttpStatus.OK).json({
         code: HttpStatus.OK,
@@ -47,7 +47,7 @@ class CartController {
   public removeFromCart = async(req: Request, res: Response, next: NextFunction): Promise<void>=>{
     try{
         const bookId: string = req.params.id;
-        const userId: string = req.body.userId;
+        const userId: string = res.locals.userId;
         const data = await this.CartService.removeItemFromCart(bookId, userId);
         res.status(HttpStatus.OK).json({
             code: HttpStatus.OK,
@@ -65,7 +65,8 @@ class CartController {
 
   public updateQuantity = async(req: Request, res: Response, next:NextFunction):Promise<void>=>{
     try{
-        const { bookId, userId, quantity } = req.body;
+        const { bookId, quantity } = req.body;
+        const userId  = res.locals.userId
         const data = await this.CartService.updateBookQuantity(bookId, userId, quantity);
         res.status(HttpStatus.OK).json({
             code: HttpStatus.OK,
